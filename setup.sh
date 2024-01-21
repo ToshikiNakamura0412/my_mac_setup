@@ -11,13 +11,6 @@ cd /Library/Fonts && sudo curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/
 echo ">>> Done"
 echo ""
 
-if [ ! -e /opt/homebrew/bin/brew ]; then
-  echo "============================"
-  echo " Homebrew will be installed"
-  echo "============================"
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-fi
-
 echo ""
 echo "========================"
 echo " tmux will be installed"
