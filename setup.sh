@@ -5,16 +5,11 @@ echo "=============================="
 echo " nerd-fonts will be installed"
 echo "=============================="
 if [ ! -d /Library/Fonts ]; then
-    sudo mkdir -pv /Library/Fonts
+  sudo mkdir -pv /Library/Fonts
 fi
-cd /Library/Fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/Hack/Regular/HackNerdFont-Regular.ttf
+cd /Library/Fonts && sudo curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/Hack/Regular/HackNerdFont-Regular.ttf
 echo ">>> Done"
 echo ""
-
-echo "============================"
-echo " Homebrew will be installed"
-echo "============================"
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 echo ""
 echo "========================"
@@ -28,11 +23,18 @@ echo " setup"
 echo "======="
 echo ""
 echo "setting git... "
+if [ -e ~/.gitconfig ]; then
+  LOAD_COMMAND_COUNT=$(cat ~/.gitconfig | grep alias | wc -l)
+  if [ $LOAD_COMMAND_COUNT -eq 0 ]; then
+    cat $SCRIPT_DIR/dotfiles/scripts/gitconfig >> ~/.gitconfig
+  fi
+else
+  cat $SCRIPT_DIR/dotfiles/scripts/gitconfig > ~/.gitconfig
+fi
 if [ ! -d ~/.config/git ]; then
   mkdir -pv ~/.config/git
 fi
-ln -sfv $SCRIPT_DIR/dotfiles/scripts/gitconfig ~/.gitconfig
-ln -sfv $SCRIPT_DIR/dotfiles/scripts/gitignore ~/.config/git/ignore
+ln -siv $SCRIPT_DIR/dotfiles/scripts/gitignore ~/.config/git/ignore
 echo ">>> Done"
 echo ""
 
@@ -49,10 +51,22 @@ echo ""
 
 echo ""
 echo "setting tmux... "
-git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+if [ -d ~/.tmux ]; then
+  rm -rf ~/.tmux
+fi
 ln -sfv $SCRIPT_DIR/dotfiles/tmux.conf ~/.tmux.conf
+git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ~/.tmux/plugins/tpm/bin/install_plugins
 echo ">>> Done"
 echo ""
 
+if [ -d ~/.vim/plugged ]; then
+  rm -rf ~/.vim/plugged
+fi
+if [ -d ~/.vim/undo ]; then
+  rm -rf ~/.vim/undo
+fi
 $SCRIPT_DIR/dotfiles/nvim/configs/basic/install.sh
+
+echo ""
+echo "please set your terminal font as 'Hack Nerd Font Regular'"
