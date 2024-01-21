@@ -65,6 +65,12 @@ git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 echo ">>> Done"
 echo ""
 
+if [ -d ~/.vim/plugged ]; then
+    rm -rf ~/.vim/plugged
+fi
+if [ -d ~/.vim/undo ]; then
+    rm -rf ~/.vim/undo
+fi
 $SCRIPT_DIR/dotfiles/nvim/configs/basic/install.sh
 
 echo ""
