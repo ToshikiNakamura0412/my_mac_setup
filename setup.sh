@@ -1,16 +1,28 @@
 #!/bin/bash
 SCRIPT_DIR=$(cd $(dirname $0); pwd)
 
+echo "=============================="
+echo " nerd-fonts will be installed"
+echo "=============================="
+if [ ! -d /Library/Fonts ]; then
+    sudo mkdir -pv /Library/Fonts
+fi
+cd /Library/Fonts && curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/Hack/Regular/HackNerdFont-Regular.ttf
+echo ">>> Done"
+echo ""
+
 echo "============================"
 echo " Homebrew will be installed"
 echo "============================"
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+echo ""
 echo "========================"
 echo " tmux will be installed"
 echo "========================"
 brew install tmux
 
+echo ""
 echo "======="
 echo " setup"
 echo "======="
