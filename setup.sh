@@ -5,16 +5,18 @@ echo "=============================="
 echo " nerd-fonts will be installed"
 echo "=============================="
 if [ ! -d /Library/Fonts ]; then
-    sudo mkdir -pv /Library/Fonts
+  sudo mkdir -pv /Library/Fonts
 fi
 cd /Library/Fonts && sudo curl -fLO https://github.com/ryanoasis/nerd-fonts/raw/HEAD/patched-fonts/Hack/Regular/HackNerdFont-Regular.ttf
 echo ">>> Done"
 echo ""
 
-echo "============================"
-echo " Homebrew will be installed"
-echo "============================"
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+if [ ! -e /opt/homebrew/bin/brew ]; then
+  echo "============================"
+  echo " Homebrew will be installed"
+  echo "============================"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
 
 echo ""
 echo "========================"
@@ -29,12 +31,12 @@ echo "======="
 echo ""
 echo "setting git... "
 if [ -e ~/.gitconfig ]; then
-    LOAD_COMMAND_COUNT=$(cat ~/.gitconfig | grep alias | wc -l)
-    if [ $LOAD_COMMAND_COUNT -eq 0 ]; then
-        cat $SCRIPT_DIR/dotfiles/scripts/gitconfig >> ~/.gitconfig
-    fi
+  LOAD_COMMAND_COUNT=$(cat ~/.gitconfig | grep alias | wc -l)
+  if [ $LOAD_COMMAND_COUNT -eq 0 ]; then
+    cat $SCRIPT_DIR/dotfiles/scripts/gitconfig >> ~/.gitconfig
+  fi
 else
-    cat $SCRIPT_DIR/dotfiles/scripts/gitconfig > ~/.gitconfig
+  cat $SCRIPT_DIR/dotfiles/scripts/gitconfig > ~/.gitconfig
 fi
 if [ ! -d ~/.config/git ]; then
   mkdir -pv ~/.config/git
@@ -57,7 +59,7 @@ echo ""
 echo ""
 echo "setting tmux... "
 if [ -d ~/.tmux ]; then
-    rm -rf ~/.tmux
+  rm -rf ~/.tmux
 fi
 ln -sfv $SCRIPT_DIR/dotfiles/tmux.conf ~/.tmux.conf
 git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -66,10 +68,10 @@ echo ">>> Done"
 echo ""
 
 if [ -d ~/.vim/plugged ]; then
-    rm -rf ~/.vim/plugged
+  rm -rf ~/.vim/plugged
 fi
 if [ -d ~/.vim/undo ]; then
-    rm -rf ~/.vim/undo
+  rm -rf ~/.vim/undo
 fi
 $SCRIPT_DIR/dotfiles/nvim/configs/basic/install.sh
 
